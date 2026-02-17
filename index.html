@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmad Mirza - Full Stack Developer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'gradient': 'gradient 3s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Styles */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        
+        .skill-bar {
+            transition: width 1.5s ease-in-out;
+        }
+        
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        
+        /* Mobile menu animation */
+        .mobile-menu-enter {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Typing animation */
+        .typing-animation {
+            border-right: 3px solid #667eea;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: #667eea; }
+            51%, 100% { border-color: transparent; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">AM</span>
+                    </div>
+                    <span class="font-bold text-xl dark:text-white">Ahmad Mirza</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Home</a>
+                    <a href="#about" class="nav-link text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">About</a>
+                    <a href="#skills" class="nav-link text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Skills</a>
+                    <a href="#projects" class="nav-link text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Projects</a>
+                    <a href="#contact" class="nav-link text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Contact</a>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    
+                    <!-- CV Download Button -->
+                    <a href="#" onclick="downloadCV()" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-download mr-2"></i>Download CV
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2">
+                    <i class="fas fa-bars text-2xl text-gray-700 dark:text-gray-300"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+            <div class="container mx-auto px-4 py-4 space-y-3 mobile-menu-enter">
+                <a href="#home" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400">Home</a>
+                <a href="#about" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400">About</a>
+                <a href="#skills" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400">Skills</a>
+                <a href="#projects" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400">Projects</a>
+                <a href="#contact" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400">Contact</a>
+                <button onclick="downloadCV()" class="w-full py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all duration-300">
+                    <i class="fas fa-download mr-2"></i>Download CV
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
+                    <h2 class="text-lg text-purple-600 dark:text-purple-400 mb-2">Hello, I'm</h2>
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-800 dark:text-white mb-4">
+                        Ahmad Mirza
+                    </h1>
+                    <div class="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-6">
+                        <span id="typingText" class="typing-animation"></span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                        Passionate full-stack developer with 5+ years of experience building scalable web applications. 
+                        I love turning ideas into reality through clean, efficient code.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                            <i class="fas fa-envelope mr-2"></i>Get In Touch
+                        </a>
+                        <a href="#projects" class="px-6 py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-600 hover:text-white transition-all duration-300">
+                            <i class="fas fa-briefcase mr-2"></i>View Projects
+                        </a>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="flex space-x-4 mt-8">
+                        <a href="https://github.com/Ahmad-Mirza" class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-purple-600 dark:hover:bg-purple-600 hover:text-white transition-all duration-300">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ahmad-mirza-7b2b58249/" class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 dark:hover:bg-blue-600 hover:text-white transition-all duration-300">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/" class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-400 dark:hover:bg-blue-400 hover:text-white transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://dribbble.com/" class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-red-600 dark:hover:bg-red-600 hover:text-white transition-all duration-300">
+                            <i class="fab fa-dribbble"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex justify-center" data-aos="fade-left">
+                    <div class="relative">
+                        <div class="w-80 h-80 md:w-96 md:h-96 rounded-full gradient-bg opacity-20 absolute -top-4 -left-4 animate-float"></div>
+                        <img src="pic.jpg" alt="Profile" class="relative rounded-full w-90 h-90 md:w-96 md:h-96 object-cover shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 dark:text-white" data-aos="fade-up">
+                About <span class="gradient-text">Me</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right">
+                    <img src="00.png" alt="Coding" class="rounded-lg shadow-xl">
+                </div>
+                
+                <div data-aos="fade-left">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Full Stack Developer</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                        I'm a passionate developer with expertise in modern web technologies. I specialize in creating 
+                        responsive, user-friendly applications that solve real-world problems. My journey in tech 
+                        started 5 years ago, and since then, I've worked on numerous projects ranging from small 
+                        business websites to large-scale enterprise applications.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-purple-600"></i>
+                            <span class="text-gray-700 dark:text-gray-300">Problem Solver</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-purple-600"></i>
+                            <span class="text-gray-700 dark:text-gray-300">Team Player</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-purple-600"></i>
+                            <span class="text-gray-700 dark:text-gray-300">Fast Learner</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-purple-600"></i>
+                            <span class="text-gray-700 dark:text-gray-300">Detail Oriented</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600">50+</div>
+                            <div class="text-gray-600 dark:text-gray-400">Projects Completed</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600">5+</div>
+                            <div class="text-gray-600 dark:text-gray-400">Years Experience</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600">30+</div>
+                            <div class="text-gray-600 dark:text-gray-400">Happy Clients</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 dark:text-white" data-aos="fade-up">
+                Technical <span class="gradient-text">Skills</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div data-aos="fade-right">
+                    <h3 class="text-xl font-bold mb-6 text-gray-800 dark:text-white">Frontend Development</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">HTML/CSS</span>
+                                <span class="text-purple-600">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">JavaScript/TypeScript</span>
+                                <span class="text-purple-600">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">React/Vue</span>
+                                <span class="text-purple-600">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">Tailwind CSS</span>
+                                <span class="text-purple-600">92%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-left">
+                    <h3 class="text-xl font-bold mb-6 text-gray-800 dark:text-white">Backend Development</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">Node.js/Express</span>
+                                <span class="text-purple-600">88%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="88%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">Python/Django</span>
+                                <span class="text-purple-600">82%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="82%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">MongoDB/PostgreSQL</span>
+                                <span class="text-purple-600">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 dark:text-gray-300">AWS/Cloud Services</span>
+                                <span class="text-purple-600">78%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" data-width="78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tech Stack Icons -->
+            <div class="mt-12 flex flex-wrap justify-center gap-4" data-aos="zoom-in">
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-html5 text-2xl text-orange-500"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-css3-alt text-2xl text-blue-500"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-js text-2xl text-yellow-500"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-react text-2xl text-cyan-500"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-node-js text-2xl text-green-500"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-python text-2xl text-blue-600"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-git-alt text-2xl text-red-500"></i>
+                </div>
+                <div class="w-16 h-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <i class="fab fa-docker text-2xl text-blue-400"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 dark:text-white" data-aos="fade-up">
+                Recent <span class="gradient-text">Projects</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="card-hover bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="ecommerce.jfif" alt="E-commerce Platform" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-purple-600 text-white text-sm rounded-full">Live</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">E-commerce Platform</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Full-featured e-commerce solution with payment integration, admin dashboard, and real-time inventory management.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">React</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Node.js</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">MongoDB</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Stripe</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="card-hover bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="task.jfif" alt="Task Management App" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-green-600 text-white text-sm rounded-full">Live</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">Task Management App</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Collaborative task management tool with real-time updates, drag-and-drop interface, and team analytics.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Vue.js</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Firebase</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Tailwind</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="card-hover bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="social.png" alt="Social Media Dashboard" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">Live</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">Social Media Dashboard</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Analytics dashboard for social media management with data visualization, scheduling, and reporting features.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Next.js</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Chart.js</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">PostgreSQL</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="card-hover bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="400">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="ai.jfif" alt="AI Chatbot" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-yellow-600 text-white text-sm rounded-full">Beta</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">AI Customer Support Bot</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Intelligent chatbot with NLP capabilities for customer service automation and 24/7 support.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Python</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">TensorFlow</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">FastAPI</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="card-hover bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="500">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="fitness.jfif" alt="Fitness Tracker" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-red-600 text-white text-sm rounded-full">Live</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">Fitness Tracking App</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Mobile-first fitness app with workout plans, progress tracking, and social features for motivation.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">React Native</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">GraphQL</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">AWS</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="card-hover bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="600">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="video.jfif" alt="Video Streaming Platform" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-purple-600 text-white text-sm rounded-full">Live</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">Video Streaming Platform</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Netflix-like streaming platform with adaptive bitrate streaming, user recommendations, and multi-device support.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Angular</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">HLS</span>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs rounded">Redis</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 dark:text-white" data-aos="fade-up">
+                Get In <span class="gradient-text">Touch</span>
+            </h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div data-aos="fade-right">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Let's Connect</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-8">
+                            I'm always interested in hearing about new projects and opportunities. 
+                            Whether you have a question or just want to say hi, feel free to reach out!
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-envelope text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                                    <p class="text-gray-800 dark:text-white">am34420026@gmail.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-phone text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
+                                    <p class="text-gray-800 dark:text-white">+92 324-7062828 </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-map-marker-alt text-purple-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Location</p>
+                                    <p class="text-gray-800 dark:text-white">Okara, Pakistan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div data-aos="fade-left">
+                        <form id="contactForm" class="space-y-4">
+                            <div>
+                                <input type="text" id="name" placeholder="Your Name" required
+                                    class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:border-purple-600 dark:focus:border-purple-400 focus:outline-none transition-colors text-gray-800 dark:text-white">
+                            </div>
+                            
+                            <div>
+                                <input type="email" id="email" placeholder="Your Email" required
+                                    class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:border-purple-600 dark:focus:border-purple-400 focus:outline-none transition-colors text-gray-800 dark:text-white">
+                            </div>
+                            
+                            <div>
+                                <input type="text" id="subject" placeholder="Subject" required
+                                    class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:border-purple-600 dark:focus:border-purple-400 focus:outline-none transition-colors text-gray-800 dark:text-white">
+                            </div>
+                            
+                            <div>
+                                <textarea id="message" rows="5" placeholder="Your Message" required
+                                    class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:border-purple-600 dark:focus:border-purple-400 focus:outline-none transition-colors text-gray-800 dark:text-white resize-none"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                                <i class="fas fa-paper-plane mr-2"></i>Send Message
+                            </button>
+                        </form>
+                        
+                        <div id="successMessage" class="hidden mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
+                            <i class="fas fa-check-circle mr-2"></i>Message sent successfully!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>&copy; 2026 Ahmad. All rights reserved.</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://github.com/ahmad34420026" class="hover:text-purple-400 transition-colors">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ahmad-ali-34420026" class="hover:text-purple-400 transition-colors">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="https://twitter.com/ahmad34420026" class="hover:text-purple-400 transition-colors">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="https://dribbble.com" class="hover:text-purple-400 transition-colors">
+                        <i class="fab fa-dribbble text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com" class="hover:text-purple-400 transition-colors">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Typing Animation
+        const typingTexts = ['Full Stack Developer', 'UI/UX Designer', 'Problem Solver', 'Tech Enthusiast'];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 100;
+        const deletingSpeed = 50;
+        const pauseTime = 2000;
+        
+        function typeText() {
+            const currentText = typingTexts[textIndex];
+            const typingElement = document.getElementById('typingText');
+            
+            if (!isDeleting) {
+                typingElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+                
+                if (charIndex === currentText.length) {
+                    isDeleting = true;
+                    setTimeout(typeText, pauseTime);
+                    return;
+                }
+            } else {
+                typingElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+                
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % typingTexts.length;
+                }
+            }
+            
+            setTimeout(typeText, isDeleting ? deletingSpeed : typingSpeed);
+        }
+        
+        typeText();
+        
+        // Skill Bars Animation
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+        
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const skillBars = entry.target.querySelectorAll('.skill-bar');
+                    skillBars.forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 200);
+                    });
+                }
+            });
+        }, observerOptions);
+        
+        const skillsSection = document.querySelector('#skills');
+        if (skillsSection) {
+            skillObserver.observe(skillsSection);
+        }
+        
+        // Contact Form
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would normally send the data to a server
+            console.log('Form submitted:', { name, email, subject, message });
+            
+            // Show success message
+            successMessage.classList.remove('hidden');
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 5000);
+        });
+        
+        // CV Download Function
+        function downloadCV() {
+            // Create a dummy CV content
+            const cvContent = `
+		AHMAD MIRZA
+ 		
+		Experience
+Developed and maintained responsive websites and web applications using:
+  HTML
+  CSS
+  JavaScript 
+ tailwind CSS
+Education
+•	2022 - 2024 Intermediate (ICS):
+                                                          PUNJAB COLLEGE OKARA 
+•	2024 - 2028 BS - (Software Engineer):
+                                                                        (UMT LAHORE)
+Communication
+• Clear client communication and requirement gathering
+• Effective collaboration with design and backend teams
+• Able to explain technical concepts to non-technical stakeholders
+Leadership
+• Led a team of developers on multiple web projects
+• Mentored junior developers and interns
+• Managed sprints and delegated tasks in Agile teams
+References
+
+Available upon request
+            `;
+            
+            // Create blob and download
+            const blob = new Blob([cvContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Ahmad_Mirza_CV.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('hidden');
+            } else {
+                backToTopBtn.classList.add('hidden');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Active Navigation Link
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-purple-600', 'dark:text-purple-400');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('text-purple-600', 'dark:text-purple-400');
+                }
+            });
+        });
+        
+        // Navbar scroll effect
+        const navbar = document.querySelector('nav');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
